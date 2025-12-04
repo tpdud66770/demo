@@ -1,8 +1,11 @@
 package com.example.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,19 +16,29 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;               // id (BIGINT)
+    @Column(name = "book_id")
+    private Long bookId;
 
-    @Column(name = "reg_date")
-    private LocalDate regDate;     // reg_date (DATE)
+    @Column(name = "member_id")
+    private Long memberId;
 
-    @Column(name = "update_date")
-    private LocalDate updateDate;  // update_date (DATE)
+    private String title;
+    private String content;
+    private String author;
 
-    private String title;          // title (VARCHAR)
-    private String content;        // content (VARCHAR)
+    @Column(name = "view_cnt")
+    private Long viewCnt = 0L;
 
-    private String author;         // author (VARCHAR)
+    @Column(name = "liked")
+    private Boolean liked = false;
 
-    @Column(name = "image_id")
-    private Long imageId;          // image_id (BIGINT)
+    @Column(name = "create_at")
+    private LocalDate createAt;
+
+    @Column(name = "update_at")
+    private LocalDate updateAt;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Image> images = new ArrayList<>();
 }
