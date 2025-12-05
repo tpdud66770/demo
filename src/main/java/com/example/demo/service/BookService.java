@@ -16,4 +16,6 @@ public interface BookService {
     Book update(Long id, Book newData);
 
     void delete(Long id);
+
+    void likeToggle(Long member_id,Long book_id);
 }

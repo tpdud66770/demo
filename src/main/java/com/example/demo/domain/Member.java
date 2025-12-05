@@ -14,6 +14,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name="like_id")
+    private Likes like;
+
     @Column(name = "name")
     private String name;
 

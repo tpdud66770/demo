@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Book;
+import com.example.demo.domain.Likes;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,12 @@ public class BookController {
     @DeleteMapping("/delete")
     public void delete(@RequestParam Long id) {
         bookService.delete(id);
+    }
+
+    //좋아요 클릭
+    @PostMapping("/like")
+    public void like(@RequestBody Likes like){
+        bookService.likeToggle(like.getBook().getBookId(), like.getMember().getId());
     }
 }
 

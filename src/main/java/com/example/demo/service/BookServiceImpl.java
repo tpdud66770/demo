@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.domain.Book;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.repository.BookRepository;
+import com.example.demo.repository.LikeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final LikeRepository likeRepository;
 
     @Override
     public List<BookDTO> findAll() {
@@ -66,6 +68,18 @@ public class BookServiceImpl implements BookService {
     @Override
     public void delete(Long bookId) {
         bookRepository.deleteById(bookId);
+    }
+
+    @Override
+    public void likeToggle(Long member_id,Long book_id){
+
+        boolean exists = likeRepository.existsByMember_IdAndBook_BookId(member_id, book_id);
+
+        if (exists) {
+            likeRepository.likeToggle(member_id, book_id);
+        } else {
+            likeRepository.insertLike(member_id, book_id);
+        }
     }
 }
 
