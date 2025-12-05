@@ -51,6 +51,7 @@ public class BookController {
     @PostMapping("/like")
     public void like(@RequestBody Likes like){
         bookService.likeToggle(like.getBook().getBookId(), like.getMember().getId());
+
     }
 }
 

@@ -10,4 +10,5 @@ public class BookDTO {
     private String title;
     private String author;
     private Long viewCnt;
+    private String imgUrl;
 }

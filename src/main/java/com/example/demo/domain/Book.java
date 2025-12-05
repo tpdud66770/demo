@@ -1,11 +1,8 @@
 package com.example.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -31,9 +28,8 @@ public class Book {
     @Column(name = "update_time")
     private LocalDate updateTime;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Image> images = new ArrayList<>();
+    @Column(name = "img_url")
+    private String imgUrl;
 
     // 나중에 좋아요 기능 생기면 주석풀기
     //@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)

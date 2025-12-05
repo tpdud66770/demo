@@ -20,5 +20,4 @@ public class BookDetailDTO {
     private LocalDate createAt;
     private LocalDate updateAt;
 
-    private List<ImageDTO> images;
 }

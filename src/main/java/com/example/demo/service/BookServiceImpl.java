@@ -29,6 +29,7 @@ public class BookServiceImpl implements BookService {
                     dto.setTitle(book.getTitle());
                     dto.setAuthor(book.getAuthor());
                     dto.setViewCnt(book.getViewCnt());
+                    dto.setImgUrl(book.getImgUrl());
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -60,7 +61,8 @@ public class BookServiceImpl implements BookService {
         book.setTitle(newData.getTitle());
         book.setContent(newData.getContent());
         book.setAuthor(newData.getAuthor());
-        book.setUpdateTime(LocalDate.now());   // update_time 저장
+        book.setUpdateTime(LocalDate.now());
+        book.setImgUrl(newData.getImgUrl());// update_time 저장
 
         return bookRepository.save(book);
     }
