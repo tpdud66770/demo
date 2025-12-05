@@ -142,7 +142,7 @@ public class Comment {
 | 댓글 수정    | PUT    | `/api/comments/{commentId}` |
 | 댓글 삭제    | DELETE | `/api/comments/{commentId}` |
 
-## 📡 📌 **API 응답 예시**
+## 📡 **Postman API 응답 예시**
 
 ### 📘 Book API 응답
 
@@ -170,6 +170,54 @@ public class Comment {
   "updateTime": "2025-12-05",
   "imgUrl": "https://test-image.jpg"
 }
+```
+
+### ✅ ② 도서 상세 조회 (GET/api/books/detail?id=1)
+
+### ✔ Response
+```
+{
+  "bookId": 1,
+  "title": "테스트 책",
+  "content": "테스트 내용",
+  "author": "홍길동",
+  "viewCnt": 1,
+  "regTime": "2025-12-05",
+  "updateTime": "2025-12-05",
+  "imgUrl": "https://test-image.jpg"
+}
+```
+
+### ✅ ③ 도서 수정 (PUT/api/books/update)
+
+### ✔ Request Body
+```
+{
+  "bookId": 1,
+  "title": "수정된 제목",
+  "content": "수정된 내용",
+  "author": "김철수",
+  "imgUrl": "https://new-image.jpg"
+}
+```
+
+### ✔ Response
+```
+{
+  "bookId": 1,
+  "title": "수정된 제목",
+  "content": "수정된 내용",
+  "author": "김철수",
+  "viewCnt": 1,
+  "regTime": "2025-12-05",
+  "updateTime": "2025-12-05",
+  "imgUrl": "https://new-image.jpg"
+}
+```
+### ✅ ④ 도서 삭제 (DELETE /api/books/delete?id=1)
+
+### ✔ Response
+```[]
 ```
 
 ## 🧪 **Postman API 테스트 결과**
