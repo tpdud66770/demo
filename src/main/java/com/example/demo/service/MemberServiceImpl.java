@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.dto.BookDTO;
+import com.example.demo.dto.MessageDTO;
 import com.example.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,13 @@ public class MemberServiceImpl implements MemberService{
 
     // 회원가입 시 멤버 저장
     @Override
-    public void save(Member member){
+    public MessageDTO save(Member member){
+
         memberRepository.save(member);
+        MessageDTO message = new MessageDTO();
+        message.setStatus("success");
+        message.setMessage("회원가입 성공");
+        return message;
     }
 
     // 로그인 시 멤버 조회
@@ -27,7 +34,7 @@ public class MemberServiceImpl implements MemberService{
     * 이후 비번을 비교한다 비번 비교한다
     * */
     @Override
-    public void findMember(Member member){
+    public MessageDTO findMember(Member member){
         Optional<Member> matchingMember = memberRepository.findByLoginId(member.getLoginId());
 
         Member findingMember = matchingMember.orElseThrow(
@@ -36,6 +43,11 @@ public class MemberServiceImpl implements MemberService{
         if (!member.getPass().equals(findingMember.getPass())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+
+        MessageDTO message = new MessageDTO();
+        message.setStatus("success");
+        message.setMessage("로그인 성공");
+        return message;
     }
 
 }

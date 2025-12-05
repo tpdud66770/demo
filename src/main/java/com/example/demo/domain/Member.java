@@ -18,12 +18,12 @@ public class Member {
     @JoinColumn(name="like_id")
     private Likes like;
 
-    @Column(name = "name")
-    private String name;
-
     @Column(name = "login_id", nullable = false, unique = true)
     private String loginId;
 
-    @Column(name = "pass_id", nullable = false, unique = true)
+    @Column(name = "pass", nullable = false, unique = true)
     private String pass;
+
+    @Column(name = "name")
+    private String name;
 }
