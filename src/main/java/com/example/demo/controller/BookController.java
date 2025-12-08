@@ -57,8 +57,11 @@ public class BookController {
 
     //좋아요 클릭
     @PatchMapping("/{bookId}")
-    public ResponseEntity<?> like(@PathVariable Long bookId,@RequestBody Likes like) {
-        boolean liked = bookService.likeToggle(bookId, like.getMember().getId());
+    public ResponseEntity<?> like(@PathVariable Long bookId,@RequestAttribute("loginId") String loginId) {
+
+        Long memberId = memberService.findIdByLoginId(loginId);
+
+        boolean liked = bookService.likeToggle(bookId, memberId);
 
         if (liked) {
             return ResponseEntity.ok("liked");

@@ -11,5 +11,4 @@ public interface MypageService {
     //1. 내가 등록한 도서 불러오기
     List<BookDTO> findRegisteredBook(String loginId);
 
-
 }
