@@ -70,18 +70,6 @@ public class BookController {
         }
     }
 
-    // 좋아요 누른 도서 목록 조회
-    @GetMapping("/liked")
-    public ResponseEntity<List<BookDTO>> getLikedBooks(
-            @RequestAttribute("loginId") String loginId) {
-
-        Long memberId = memberService.findIdByLoginId(loginId); // 로그인한 사용자 ID 조회
-
-        List<BookDTO> likedBooks = bookService.findLikedBooks(memberId);
-
-        return ResponseEntity.ok(likedBooks);
-    }
-
     // AI 생성 이미지 URL 저장
     @PutMapping("/{bookId}/cover-url")
     public ResponseEntity<?> updateBookCoverUrl(
