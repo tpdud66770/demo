@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean likeToggle(Long book_id,Long member_id){
+    public boolean likeToggle(Long book_id,Long member_id) {
 
         boolean exists = likeRepository.existsByMember_IdAndBook_BookId(book_id, member_id);
 
@@ -107,6 +107,26 @@ public class BookServiceImpl implements BookService {
             likeRepository.insertLike(book_id, member_id);
             return likeRepository.findLikeYn(book_id, member_id);
         }
+    }
+
+    @Override
+    public List<BookDTO> findLikedBooks (Long member_id){
+
+            // 1) 좋아요 누른 Book 목록 조회
+        List<Book> books = likeRepository.findLikedBooksByMemberId(member_id);
+
+            // 2) Book → BookDTO 변환
+        return books.stream()
+                .map(book -> {
+                    BookDTO dto = new BookDTO();
+                    dto.setBookId(book.getBookId());
+                    dto.setTitle(book.getTitle());
+                    dto.setAuthor(book.getAuthor());
+                    dto.setViewCnt(book.getViewCnt());
+                    dto.setImgUrl(book.getImgUrl());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 }
 

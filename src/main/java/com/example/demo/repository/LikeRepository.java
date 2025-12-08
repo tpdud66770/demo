@@ -1,11 +1,14 @@
 package com.example.demo.repository;
 
+import com.example.demo.domain.Book;
 import com.example.demo.domain.Likes;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface LikeRepository extends JpaRepository<Likes,Long> {
 
@@ -29,4 +32,7 @@ public interface LikeRepository extends JpaRepository<Likes,Long> {
     Boolean findLikeYn(Long bookId, Long memberId);
 
     boolean existsByMember_IdAndBook_BookId(Long bookId, Long memberId);
+
+    @Query("SELECT l.book FROM Likes l WHERE l.member.id = :memberId AND l.like_yn = true")
+    List<Book> findLikedBooksByMemberId(@Param("memberId") Long memberId);
 }

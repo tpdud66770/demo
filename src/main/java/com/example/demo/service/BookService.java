@@ -20,4 +20,6 @@ public interface BookService {
     boolean likeToggle(Long book_id,Long member_id);
 
     Book updateBookCoverUrl(Long bookId, String imgUrl);
+
+    List<BookDTO> findLikedBooks(Long member_id);
 }

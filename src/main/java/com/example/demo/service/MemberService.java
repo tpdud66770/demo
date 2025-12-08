@@ -10,4 +10,5 @@ public interface MemberService {
     // 로그인 시 멤버 조회 후 토큰 발행
     String loginMember(Member member);
 
+    Long findIdByLoginId(String loginId);
 }
