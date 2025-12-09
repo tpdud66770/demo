@@ -3,6 +3,8 @@ package com.example.demo.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,6 +32,9 @@ public class Book {
 
     @Column(name = "img_url" , columnDefinition = "CLOB")
     private String imgUrl;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+    private List<Likes> likes = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "member_loginId", referencedColumnName = "login_id")
