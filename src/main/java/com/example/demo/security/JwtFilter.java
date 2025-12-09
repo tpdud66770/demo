@@ -28,12 +28,9 @@ public class JwtFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
 
-        System.out.println(">>> JwtFilter 실행됨"); // 로그
-
         String uri = request.getRequestURI();
 
         if (uri.startsWith("/api/member/")) {
-            System.out.println(">>> 패싱하기"); // 로그
             filterChain.doFilter(request, response);
             return;
         }
@@ -41,11 +38,9 @@ public class JwtFilter extends OncePerRequestFilter {
         // 2) 쿠키에서 accessToken 찾기
         String token = extractTokenFromCookie(request);
 
-        System.out.println(">>> 쿠키에서 받은 토큰: " + token);
-
         // 3) JWT 검증
         if (token != null && jwtUtil.validateToken(token)) {
-            System.out.println(">>> 토큰 유효함");
+
             Claims claims = jwtUtil.getClaims(token);
             String loginId = claims.getSubject();
 
@@ -55,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     new UsernamePasswordAuthenticationToken(loginId, null, List.of());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println(">>> 인증되었음");
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -73,6 +68,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 return cookie.getValue(); // 쿠키에는 Bearer 없음 → 바로 반환
             }
         }
+
         return null;
     }
 }
