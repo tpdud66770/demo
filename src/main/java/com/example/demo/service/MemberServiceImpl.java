@@ -70,4 +70,10 @@ public class MemberServiceImpl implements MemberService{
         return memberRepository.checkDuplication(checkId);
     }
 
+    @Override
+    public Member findById(Long id) {
+        return memberRepository.findById(id)
+                .orElse(null);
+    }
+
 }

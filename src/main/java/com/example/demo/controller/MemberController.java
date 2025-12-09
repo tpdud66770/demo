@@ -91,6 +91,17 @@ public class MemberController {
             return ResponseEntity.ok(response);
 
         }
-
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Member> getMemberById(@PathVariable Long id) {
+        Member member = memberService.findById(id);  // ⭐ 서비스 계층 호출
+
+        if (member == null) {
+            return ResponseEntity.status(404).build();
+        }
+
+        return ResponseEntity.ok(member);
+    }
+
 }

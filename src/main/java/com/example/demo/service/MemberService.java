@@ -15,4 +15,7 @@ public interface MemberService {
     boolean findLoginIdbyCheckId(String checkId);
 
     Member findByLoginId(String loginId);
+
+    Member findById(Long id);
+
 }
