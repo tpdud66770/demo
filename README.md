@@ -119,15 +119,16 @@ src
 ## 8. 프로젝트 설계 문서 링크
 프로젝트 전반의 흐름, ERD 구조, API 명세서, 협업 규칙 등이 담겨 있습니다.
 ```
-📄 Notion 문서
+📄 프로젝트 흐름(notion)
 ```
 🔗 https://www.notion.so/4-20-_-2bf1779ea17e8055b273d610729db2e2
 
 ```
-📄 API 테스트(Postman) 문서
+📄 ERD 구조와 API 명세서
 ```
-🔗 Postman Collection Export 링크 삽입
+🔗 https://drive.google.com/file/d/1HQs4t6HzsPvZyDS_ad77loR5L-eWW3dj/view?usp=sharing
 
+🔗 https://docs.google.com/spreadsheets/d/131vSMyB1M9gsBOHBgG41y6cmInuIWBZRxlcFOYFgs3s/edit?usp=sharing
 ```
 📄 UI 설계(Figma)
 ```
