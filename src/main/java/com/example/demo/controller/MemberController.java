@@ -39,6 +39,7 @@ public class MemberController {
                 .maxAge(60 * 60 * 24)
                 .build();
 
+        System.out.println("login-cookie token : "+cookie);
         MessageDTO response = new MessageDTO();
         response.setStatus("success");
         response.setMessage("로그인 성공");
@@ -58,6 +59,7 @@ public class MemberController {
                 .maxAge(0)  // 쿠키 즉시 만료
                 .build();
 
+        System.out.println("logout-cookie token : "+cookie);
         MessageDTO response = new MessageDTO();
         response.setStatus("success");
         response.setMessage("로그아웃 성공");
