@@ -22,24 +22,24 @@ public class JwtFilter extends OncePerRequestFilter {
         this.jwtUtil = jwtUtil;
     }
 
-    // 필터, 쿠키를 확인하는 과정으로 로그인 관련 api를 제외하고 다 통용되게 함
-    // 만약 쿠키가 존재하지 않거나 유효하지 않다면 특수 메시지를 생성
     @Override
-    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
         String uri = request.getRequestURI();
 
+        // 회원 관련 API는 필터 패스
         if (uri.startsWith("/api/member/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2) 쿠키에서 accessToken 찾기
         String token = extractTokenFromCookie(request);
-//        System.out.println(">>>> 필터에 들어옴 토큰 값 : "+token);
 
-        // 3) JWT 검증
+        // 토큰 있고 + 유효한 경우만 로그인 처리
         if (token != null && jwtUtil.validateToken(token)) {
 
             Claims claims = jwtUtil.getClaims(token);
@@ -56,21 +56,24 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        // 토큰 없거나 무효 → 반드시 초기화
+        SecurityContextHolder.clearContext();
+        request.removeAttribute("loginId");
+
         filterChain.doFilter(request, response);
     }
 
     private String extractTokenFromCookie(HttpServletRequest req) {
         Cookie[] cookies = req.getCookies();
-
         if (cookies == null) return null;
 
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("accessToken")) {
-                return cookie.getValue(); // 쿠키에는 Bearer 없음 → 바로 반환
+            if ("accessToken".equals(cookie.getName())) {
+                return cookie.getValue();
             }
         }
-
         return null;
     }
 }
+
 

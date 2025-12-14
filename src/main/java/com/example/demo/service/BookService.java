@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface BookService {
 
-    List<BookDTO> findAll();
+    List<BookDTO> findAll(String loginId);
 
-    List<BookDTO> hotlist();
+    List<BookDTO> hotlist(String loginId);
 
-    Book save(Book book);
+    Book save(Book book , String loginId);
 
     Book detail(Long id);
 

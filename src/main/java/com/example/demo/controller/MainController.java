@@ -4,10 +4,7 @@ import com.example.demo.dto.BookDTO;
 import com.example.demo.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,13 +16,19 @@ public class MainController {
 
     private final BookService bookService;
 
-    // 도서 목록 조회
+    // 메인 도서 목록
     @GetMapping
-    public ResponseEntity<List<BookDTO>> list() {
-        return ResponseEntity.ok(bookService.findAll());
+    public ResponseEntity<List<BookDTO>> list(
+            @RequestAttribute(value = "loginId", required = false) String loginId
+    ) {
+        return ResponseEntity.ok(bookService.findAll(loginId));
     }
 
-    // 도서 인기조회순 조회
+    // 메인 인기 도서
     @GetMapping("/hot")
-    public ResponseEntity<List<BookDTO>> hotlist(){ return ResponseEntity.ok(bookService.hotlist());}
+    public ResponseEntity<List<BookDTO>> hotlist(
+            @RequestAttribute(value = "loginId", required = false) String loginId
+    ) {
+        return ResponseEntity.ok(bookService.hotlist(loginId));
+    }
 }

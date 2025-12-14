@@ -11,5 +11,6 @@ public class BookDTO {
     private String author;
     private Long viewCnt;
     private String imgUrl;
+    private Boolean liked;
     private String ownerLoginId;
 }

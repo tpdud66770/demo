@@ -38,14 +38,26 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()    // ⭐ Preflight 허용
+                        // preflight
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 인증 없이 접근 가능
                         .requestMatchers("/api/member/**").permitAll()
                         .requestMatchers("/api/main/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+
+                        // 조회는 비로그인 허용
                         .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/books/*/comments").permitAll()
+
+                        // 그 외 (좋아요, 작성, 수정, 삭제)는 로그인 필수
                         .requestMatchers("/api/books/**").authenticated()
+                        .requestMatchers("/api/comments/**").authenticated()
+                        .requestMatchers("/api/mypage/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
+
 
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

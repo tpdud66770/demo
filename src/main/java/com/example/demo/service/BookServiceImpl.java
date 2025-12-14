@@ -7,6 +7,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.repository.LikeRepository;
 
+import com.example.demo.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,13 +23,22 @@ import java.util.stream.Collectors;
 @Log4j2
 public class BookServiceImpl implements BookService {
 
-    private final HttpServletRequest request;
     private final BookRepository bookRepository;
     private final LikeRepository likeRepository;
-    private final MemberService memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public List<BookDTO> findAll() {
+    public List<BookDTO> findAll(String loginId) {
+
+        Long memberId = null;
+        if (loginId != null) {
+            memberId = memberRepository.findByLoginId(loginId)
+                    .map(Member::getId)
+                    .orElse(null);
+        }
+
+        Long finalMemberId = memberId;
+
         return bookRepository.findAll()
                 .stream()
                 .map(book -> {
@@ -39,6 +49,16 @@ public class BookServiceImpl implements BookService {
                     dto.setViewCnt(book.getViewCnt());
                     dto.setImgUrl(book.getImgUrl());
                     dto.setOwnerLoginId(book.getMember().getLoginId());
+
+                    // 좋아요 여부 계산
+                    if (finalMemberId != null) {
+                        boolean liked = likeRepository
+                                .existsByMember_IdAndBook_BookId(finalMemberId , book.getBookId());
+                        dto.setLiked(liked);
+                    } else {
+                        dto.setLiked(false);
+                    }
+
                     return dto;
                 })
                 .collect(Collectors.toList());
@@ -46,7 +66,17 @@ public class BookServiceImpl implements BookService {
 
     //인기 조회순
     @Override
-    public List<BookDTO> hotlist() {
+    public List<BookDTO> hotlist(String loginId) {
+
+        Long memberId = null;
+        if (loginId != null) {
+            memberId = memberRepository.findByLoginId(loginId)
+                    .map(Member::getId)
+                    .orElse(null);
+        }
+
+        Long finalMemberId = memberId;
+
         return bookRepository.findAllByOrderByViewCntDesc()
                 .stream()
                 .map(book -> {
@@ -57,15 +87,26 @@ public class BookServiceImpl implements BookService {
                     dto.setViewCnt(book.getViewCnt());
                     dto.setImgUrl(book.getImgUrl());
                     dto.setOwnerLoginId(book.getMember().getLoginId());
+
+                    // 좋아요 여부 계산
+                    if (finalMemberId != null) {
+                        boolean liked = likeRepository
+                                .existsByMember_IdAndBook_BookId(finalMemberId , book.getBookId());
+                        dto.setLiked(liked);
+                    } else {
+                        dto.setLiked(false);
+                    }
+
                     return dto;
                 })
                 .collect(Collectors.toList());
     }
 
+
     @Override
-    public Book save(Book book) {
-        String loginId = (String) request.getAttribute("loginId");
-        Member member = memberRepository.findByLoginId(loginId);
+    public Book save(Book book , String loginId) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new RuntimeException("회원 없음"));
 
         book.setMember(member);
         book.setRegTime(LocalDate.now());      // reg_time
