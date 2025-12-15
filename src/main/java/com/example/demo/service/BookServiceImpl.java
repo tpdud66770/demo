@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Book;
+import com.example.demo.domain.Likes;
 import com.example.demo.domain.Member;
 import com.example.demo.dto.BookDTO;
 import com.example.demo.exception.ResourceNotFoundException;
@@ -166,24 +167,31 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public boolean likeToggle(Long book_id,Long member_id) {
+    @Transactional
+    public boolean likeToggle(Long bookId, Long memberId) {
 
-        boolean exists =
-                likeRepository.existsByMember_IdAndBook_BookIdAndLikeYnTrue(member_id, book_id);
-
+        boolean rowExists =
+                likeRepository.existsByMember_IdAndBook_BookId(memberId, bookId);
 
         log.info("=================");
-        log.info(exists);
+        log.info("rowExists = {}", rowExists);
         log.info("=================");
 
-        if (exists) {
-            likeRepository.likeToggle(book_id, member_id);
-            return likeRepository.findLikeYn(book_id, member_id);
+        if (rowExists) {
+            // 이미 row가 있으면 상태만 토글
+            likeRepository.likeToggle(bookId, memberId);
+
+            return likeRepository.findTopByMember_IdAndBook_BookIdOrderByIdDesc(memberId, bookId)
+                    .map(Likes::getLikeYn)
+                    .orElse(false);
+
         } else {
-            likeRepository.insertLike(book_id, member_id);
-            return likeRepository.findLikeYn(book_id, member_id);
+            // 최초 1번만 INSERT
+            likeRepository.insertLike(bookId, memberId);
+            return true;
         }
     }
+
 
     @Override
     public List<BookDTO> findLikedBooks (Long member_id){
