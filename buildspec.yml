@@ -7,8 +7,9 @@ phases:
 
   build:
     commands:
+      - echo "Starting gradle build..."
       - chmod +x gradlew
-      - ./gradlew build
+      - ./gradlew clean build
 
 artifacts:
   files:
