@@ -19,5 +19,4 @@ public class BookDetailDTO {
     private Boolean liked;
     private LocalDate createAt;
     private LocalDate updateAt;
-
 }
